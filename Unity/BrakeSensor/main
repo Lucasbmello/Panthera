@@ -1,0 +1,4 @@
+// All you have to do is include this line inside "try" function in void Update()
+
+// Converts the value from a string to a float
+brakeValue = (float.Parse(values[0])) / 100; // It's divided by 100 because of the Unity units

@@ -1,0 +1,60 @@
+// --------------------------------------------------------------------------
+/* EESC - USP Guepardo / Lucas Bosso de Mello
+   Serial communication between Unity and Arduino
+   Created: 27/08/2024
+   Last Update: 17/09/2024
+*/
+
+// --------------------------------------------------------------------------
+// Libraries
+using UnityEngine;
+using System.IO.Ports; // Librarie for serial communication
+
+// --------------------------------------------------------------------------
+public class SeriaCommunication : MonoBehaviour
+{
+    // --------------------------------------------------------------------------
+    // Variables for serial communication
+    public string portName; //  Check if the correct port is selected
+    public int baudRate = 9600; // Check if it is the same baud as Arduino
+    private SerialPort serialPort; // Declare the object "serialPort"
+
+    // --------------------------------------------------------------------------
+    // Initialization function
+    void Start()
+    {
+        serialPort = new SerialPort(portName, baudRate); // Creates de serial port
+        serialPort.Open(); // Opens the serial communication
+        serialPort.ReadTimeout = 100; // Max time the code will wait until send an exception
+    }
+
+    // --------------------------------------------------------------------------
+    // Loop function
+    void Update()
+    {
+        if(serialPort.IsOpen) // Checks if the port was opened correctly
+        {
+            try
+            {
+                string data = serialPort.ReadLine(); // Stores data sensor
+                Debug.Log("Data received from serial communication: " + data); // Shows the data in the console
+            }
+            
+            // --------------------------------------------------------------------------
+            catch(System.Exception)
+            {
+                // Ignores timeout exceptions and incorrect readings
+            }
+        }
+    }
+
+    // --------------------------------------------------------------------------
+    // Function to close the port as soon as the object is destroyed
+    void onDestroy()
+    {
+        if(serialPort != null && serialPort.IsOpen)
+        {
+            serialPort.Close();
+        }
+    }
+}

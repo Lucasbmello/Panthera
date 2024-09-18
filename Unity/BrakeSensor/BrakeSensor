@@ -1,0 +1,28 @@
+// --------------------------------------------------------------------------
+/* EESC - USP Guepardo / Lucas Bosso de Mello - Lucas Maroun de Almeida
+   Code to change the color of the brakes based on the brake pressure sensor data
+   Created: 16/09/2024
+   Last update: 17/09/2024
+*/
+
+using UnityEngine;
+
+public class BrakeSensor : MonoBehaviour
+{
+    // --------------------------------------------------------------------------
+    // Variables to change the color
+    public Renderer objectRenderer; // Creates the renderer
+    private Color startColor = Color.white;  // Initial color (white)
+    private Color endColor = new Color(1f, 0.5f, 0f);  // Final color (orange)
+
+    // --------------------------------------------------------------------------
+    // Function to update the color
+    void Update()
+    {
+        // Gets the value of the sensor from the main code
+        float sensorValue = SerialCommunication.brakeValue;
+
+        // Changes the color of the brakes based on sensor readings
+        objectRenderer.material.color = Color.Lerp(startColor, endColor, sensorValue);
+    }
+}
